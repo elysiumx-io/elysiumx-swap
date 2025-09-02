@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElysiumX - Decentralized Exchange</title>
+    
+    <!-- Jupiter Plugin -->
+    <script src='https://plugin.jup.ag/plugin-v1.js'></script>
+    
+    <style>
+        /* CSS Variables - Jupiter Plugin */
+        :root {
+            --jupiter-plugin-primary: 169, 27, 210;
+            --jupiter-plugin-background: 6, 1, 28;
+            --jupiter-plugin-primary-text: 232, 249, 255;
+            --jupiter-plugin-warning: 251, 191, 36;
+            --jupiter-plugin-interactive: 39, 33, 54;
+            --jupiter-plugin-module: 9, 8, 9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 100%);
+            color: #e8f9ff;
+            min-height: 100vh;
+        }
+
+
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0rem 0rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            background: rgba(9, 8, 9, 0.6);
+            border-radius: 16px;
+            padding: 0.1rem;
+            margin: 0 auto 2rem auto;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(169, 27, 210, 0.2);
+            max-width: auto;
+           
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #e8f9ff;
+            padding: 0.4rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #a91bd2, #7c3aed);
+            color: white;
+            box-shadow: 0 4px 20px rgba(169, 27, 210, 0.3);
+        }
+
+        .tab-btn:not(.active):hover {
+            background: rgba(169, 27, 210, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Swap Container */
+        .swap-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .swap-widget {
+            background: rgba(6, 1, 28);
+            border-radius: 24px;
+            border: 1px solid rgba(169, 27, 210, 0.3);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+    
+
+        .widget-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a91bd2, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Jupiter Plugin Container */
+        #target-container {
+            width: 420px;
+            height: 568px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: transparent;
+        }
+
+
+
+        /* Add Liquidity Content */
+        .liquidity-content {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .liquidity-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #a91bd2, #7c3aed);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(169, 27, 210, 0.3);
+        }
+
+        .liquidity-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #a91bd2, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .liquidity-desc {
+            color: rgba(232, 249, 255, 0.8);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .redirect-btn {
+            background: linear-gradient(135deg, #a91bd2, #7c3aed);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(169, 27, 210, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .redirect-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(169, 27, 210, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2rem 1rem;
+            }
+
+            .swap-widget {
+                padding: 1rem;
+            }
+
+            #target-container {
+                width: 350px;
+                height: 500px;
+            }
+        }
+
+       
+    </style>
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="swap">Swap</button>
+            <button class="tab-btn" data-tab="liquidity">Pools</button>
+        </div>
+
+        <!-- Swap Tab -->
+        <div class="tab-content active" id="swap">
+            <div class="swap-container">
+                <div class="swap-widget">
+                    <h2 class="widget-title">⚡ Swap Tokens</h2>
+                    
+                    <!-- Jupiter Plugin Container -->
+                    <div id="target-container" style="width: 400px; height: 568px;">
+                    
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Add Liquidity Tab -->
+        <div class="tab-content" id="liquidity">
+            <div class="liquidity-content">
+                <div class="liquidity-icon">💧</div>
+                <h2 class="liquidity-title">Add Liquidity</h2>
+                <p class="liquidity-desc">
+                    Provide liquidity to earn fees and rewards. You'll be redirected to Raydium, 
+                    our trusted partner for liquidity provision with the best rates and security.
+                </p>
+                <a href="https://raydium.io/liquidity/increase/" target="_blank" class="redirect-btn">
+                    Go to Raydium →
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.tab;
+                
+                // Remove active classes
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                btn.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                
+                // Initialize Jupiter plugin when swap tab is activated
+                if (targetTab === 'swap') {
+                    initializeJupiter();
+                }
+            });
+        });
+
+        // Initialize Jupiter plugin
+        function initializeJupiter() {
+            // Only initialize if Jupiter is available and not already initialized
+            if (typeof window.Jupiter !== 'undefined' && !window.jupiterInitialized) {
+                try {
+                    window.Jupiter.init({
+                        displayMode: "integrated",
+                        integratedTargetId: "target-container",
+                        defaultExplorer: "Solscan",
+                        formProps: {
+                            swapMode: "ExactInOrOut",
+                        },
+                        branding: {
+                            name: "ElysiumX",
+                            logoUri: "https://avatars.githubusercontent.com/u/223986429",
+                        },
+                    });
+                    window.jupiterInitialized = true;
+                } catch (error) {
+                    console.error('Jupiter initialization error:', error);
+                    document.getElementById('target-container').innerHTML = 
+                        '<div class="loading"><p>Failed to load Jupiter Swap. Please refresh the page.</p></div>';
+                }
+            }
+        }
+
+        // Initialize Jupiter when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                initializeJupiter();
+            }, 1000);
+        });
+
+
+    </script>
+</body>
+</html>
